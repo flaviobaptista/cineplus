@@ -7,6 +7,7 @@
   --text-soft: #d9d9e4;
   --accent-main: #ff1a57;
   --accent-main-2: #ff3b46;
+  --accent-main-3: #ff1a578e;
   --accent-lilac: #b56bff;
   --border-soft: rgba(255, 255, 255, 0.12);
   --shadow-accent: 0 20px 42px rgba(255, 26, 87, 0.28);
@@ -14,6 +15,31 @@
 
 * {
   box-sizing: border-box;
+}
+
+:where(
+  a,
+  button,
+  input,
+  select,
+  .video-card,
+  .episode-card,
+  .custom-select-trigger,
+  .custom-select-option,
+  .play-icon,
+  .play-button,
+  .ghost-button,
+  .icon-button,
+  .control-button
+) {
+  transition:
+    color 0.24s ease,
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    transform 0.24s ease,
+    opacity 0.24s ease,
+    filter 0.24s ease;
 }
 
 html,
@@ -81,7 +107,7 @@ body.no-scroll {
   user-select: none;
 }
 
-.logo-link{
+.logo-link {
   text-decoration: none;
 }
 
@@ -331,6 +357,11 @@ main {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.65);
   filter: brightness(1.08);
+}
+
+.play-icon .bi {
+  font-size: 1.45rem;
+  line-height: 1;
 }
 
 .progress-bar-wrap {
@@ -584,6 +615,140 @@ main {
   font-weight: 600;
 }
 
+.native-select-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+  min-width: 160px;
+}
+
+.custom-select.is-hidden {
+  display: none !important;
+}
+
+.custom-select-trigger {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #2a2a34, #202029);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.custom-select-trigger .bi {
+  font-size: 0.78rem;
+  transition: transform 0.2s ease;
+}
+
+.custom-select.is-open .custom-select-trigger .bi {
+  transform: rotate(180deg);
+}
+
+.custom-select-trigger:hover,
+.custom-select-trigger:focus,
+.custom-select.is-open .custom-select-trigger {
+  border-color: var(--accent-main);
+  box-shadow: 0 0 0 3px #ff1a5733;
+  outline: none;
+}
+
+.custom-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: none;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 0.35rem;
+  background: linear-gradient(180deg, #2a2a34, #202029);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+}
+
+.custom-select.is-open .custom-select-menu {
+  display: block;
+}
+
+.custom-select.opens-up .custom-select-menu {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+
+.custom-select-option {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.6rem;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  margin-top: 5px;
+  
+}
+
+.custom-select-option:focus,
+.custom-select-option.is-selected {
+  background: var(--accent-main);
+  color: #fff;
+  outline: none;
+}
+.custom-select-option:hover {
+  background: var(--accent-main-3);
+  color: #fff;
+  outline: none;
+}
+
+.custom-select-option.is-disabled,
+.custom-select-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.custom-select.is-compact {
+  min-width: auto;
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.custom-select.is-compact .custom-select-trigger {
+  min-height: 32px;
+  border-radius: 8px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.86rem;
+}
+
+.custom-select.is-compact .custom-select-menu {
+  border-radius: 8px;
+}
+
+.custom-select.is-compact .custom-select-option {
+  font-size: 0.86rem;
+  padding: 0.45rem 0.55rem;
+}
+
 .season-picker select {
   min-width: 160px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -593,6 +758,8 @@ main {
   height: 36px;
   padding: 0 2rem 0 0.75rem;
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   background-image:
     linear-gradient(45deg, transparent 50%, #fff 50%),
     linear-gradient(135deg, #fff 50%, transparent 50%);
@@ -601,16 +768,31 @@ main {
     calc(100% - 12px) calc(50% - 3px);
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .season-picker select:hover {
-  border-color: rgba(255, 26, 87, 0.55);
+  border-color: rgba(255, 26, 26, 0.55);
 }
 
 .season-picker select:focus {
   outline: none;
   border-color: rgba(181, 107, 255, 0.85);
   box-shadow: 0 0 0 3px rgba(181, 107, 255, 0.2);
+}
+
+.season-picker option {
+  background: #2a2a34 !important;
+  color: #fff !important;
+  cursor: pointer;
+}
+
+.season-picker option:hover,
+.season-picker option:focus,
+.season-picker option:checked {
+  background-color: #ff1a57 !important;
+  color: #fff !important;
+  cursor: pointer;
 }
 
 .episodes-grid {
@@ -706,6 +888,7 @@ main {
   color: #cbc8dd;
   font-size: 0.77rem;
 }
+
 .player-modal {
   position: fixed;
   inset: 0;
@@ -813,6 +996,11 @@ main {
   transform: translate(-50%, -50%) scale(1.06);
 }
 
+.big-play .bi {
+  font-size: 2.15rem;
+  line-height: 1;
+}
+
 .big-play.is-hidden {
   display: none;
 }
@@ -884,6 +1072,11 @@ main {
   border-color: rgba(255, 26, 87, 0.75);
 }
 
+.control-button .bi {
+  font-size: 1.08rem;
+  line-height: 1;
+}
+
 .time-label {
   font-size: 0.76rem;
   color: #d6d4e8;
@@ -893,6 +1086,7 @@ main {
 .volume-range {
   width: 95px;
   accent-color: var(--accent-lilac);
+  cursor: pointer;
 }
 
 .speed-select,
@@ -903,10 +1097,15 @@ main {
   background: #fff;
   height: 32px;
   padding: 0 0.4rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .audio-select {
   min-width: 110px;
+  cursor: pointer;
 }
 
 .speed-select:hover,
@@ -914,15 +1113,17 @@ main {
 .audio-select:hover,
 .audio-select:focus {
   color: #fff;
-  background: #0d6efd;
-  border-color: #0d6efd;
+  background: #ff1a57;
+  border-color: #ff1a57;
   outline: none;
+  cursor: pointer;
 }
 
 .speed-select option,
 .audio-select option {
-  color: #111;
-  background: #fff;
+  color: #111 !important;
+  background: #fff !important;
+  cursor: pointer;
 }
 
 .speed-select option:hover,
@@ -931,8 +1132,9 @@ main {
 .audio-select option:hover,
 .audio-select option:focus,
 .audio-select option:checked {
-  color: #fff;
-  background: #0d6efd;
+  color: #fff !important;
+  background: #ff1a57 !important;
+  cursor: pointer;
 }
 
 .spacer {

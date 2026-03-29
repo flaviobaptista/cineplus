@@ -67,6 +67,7 @@ let catalogPageSize = calculateCatalogPageSize();
 let currentSeriesSeasonIndex = 0;
 let currentSeriesEpisodeIndex = 0;
 let catalogTypeFilter = "all";
+let seasonSelectUiCleanup = null;
 
 init();
 
@@ -254,6 +255,11 @@ function initDetailsPage() {
   }
 
   if (seasonSelect) {
+    if (typeof seasonSelectUiCleanup === "function") {
+      seasonSelectUiCleanup();
+    }
+    seasonSelectUiCleanup = enhanceCustomSelect(seasonSelect, { minWidth: 170 });
+
     seasonSelect.addEventListener("change", (event) => {
       if (!currentDetailsVideo || !isSeries(currentDetailsVideo)) return;
       currentSeriesSeasonIndex = Number(event.target.value) || 0;
@@ -909,7 +915,8 @@ function createCustomVideoPlayer(videoData, options = {}) {
   const bigPlay = document.createElement("button");
   bigPlay.type = "button";
   bigPlay.className = "big-play";
-  bigPlay.textContent = ">";
+  setButtonIcon(bigPlay, "bi-play-circle");
+  bigPlay.setAttribute("aria-label", "Reproduzir");
 
   const controls = document.createElement("div");
   controls.className = "custom-controls";
@@ -924,8 +931,8 @@ function createCustomVideoPlayer(videoData, options = {}) {
   const row = document.createElement("div");
   row.className = "controls-row";
 
-  const playPauseButton = createControlButton("> ");
-  const muteButton = createControlButton("Som");
+  const playPauseButton = createControlButton("bi-play-circle", "Reproduzir / pausar");
+  const muteButton = createControlButton("bi-volume-up-fill", "Alternar mudo");
   const timeLabel = document.createElement("span");
   timeLabel.className = "time-label";
   timeLabel.textContent = "00:00 / 00:00";
@@ -961,7 +968,7 @@ function createCustomVideoPlayer(videoData, options = {}) {
   const spacer = document.createElement("div");
   spacer.className = "spacer";
 
-  const fullscreenButton = createControlButton("Tela");
+  const fullscreenButton = createControlButton("bi-fullscreen", "Tela cheia");
   const playerEpisodeContext = getEpisodeContextFromPlayable(videoData);
 
   const episodeNav = document.createElement("div");
@@ -994,6 +1001,17 @@ function createCustomVideoPlayer(videoData, options = {}) {
   row.appendChild(speedSelect);
   row.appendChild(spacer);
   row.appendChild(fullscreenButton);
+
+  const destroySpeedSelectUi = enhanceCustomSelect(speedSelect, {
+    compact: true,
+    minWidth: 84,
+    preferUp: true,
+  });
+  const destroyAudioSelectUi = enhanceCustomSelect(audioSelect, {
+    compact: true,
+    minWidth: 118,
+    preferUp: true,
+  });
 
   controls.appendChild(timeline);
   controls.appendChild(row);
@@ -1294,6 +1312,16 @@ function createCustomVideoPlayer(videoData, options = {}) {
     showControls({ autoHide: true });
   };
 
+  const updateMuteButtonIcon = () => {
+    const icon = videoEl.muted || videoEl.volume === 0 ? "bi-volume-mute-fill" : "bi-volume-up-fill";
+    setButtonIcon(muteButton, icon);
+  };
+
+  const updateFullscreenButtonIcon = () => {
+    const icon = isFullscreen() ? "bi-fullscreen-exit" : "bi-fullscreen";
+    setButtonIcon(fullscreenButton, icon);
+  };
+
   videoEl.addEventListener("loadedmetadata", () => {
     if (Number.isFinite(pendingSourceSeekTime)) {
       const maxSeek = Number.isFinite(videoEl.duration) && videoEl.duration > 0
@@ -1326,13 +1354,13 @@ function createCustomVideoPlayer(videoData, options = {}) {
   });
 
   videoEl.addEventListener("play", () => {
-    playPauseButton.textContent = "II";
+    setButtonIcon(playPauseButton, "bi-pause-circle");
     bigPlay.classList.add("is-hidden");
     showControls({ autoHide: true });
   });
 
   videoEl.addEventListener("pause", () => {
-    playPauseButton.textContent = ">";
+    setButtonIcon(playPauseButton, "bi-play-circle");
     bigPlay.classList.remove("is-hidden");
     showControls({ autoHide: false });
   });
@@ -1369,14 +1397,14 @@ function createCustomVideoPlayer(videoData, options = {}) {
 
   muteButton.addEventListener("click", () => {
     videoEl.muted = !videoEl.muted;
-    muteButton.textContent = videoEl.muted ? "Mudo" : "Som";
+    updateMuteButtonIcon();
     onPlayerInteraction();
   });
 
   volumeRange.addEventListener("input", () => {
     videoEl.volume = Number(volumeRange.value);
     videoEl.muted = videoEl.volume === 0;
-    muteButton.textContent = videoEl.muted ? "Mudo" : "Som";
+    updateMuteButtonIcon();
     onPlayerInteraction();
   });
 
@@ -1417,6 +1445,7 @@ function createCustomVideoPlayer(videoData, options = {}) {
   controls.addEventListener("mouseleave", () => queueHideControls());
 
   const onFullscreenChange = () => {
+    updateFullscreenButtonIcon();
     if (isFullscreen()) {
       showControls({ autoHide: true });
       return;
@@ -1424,23 +1453,247 @@ function createCustomVideoPlayer(videoData, options = {}) {
     showControls({ autoHide: false });
   };
 
+  updateMuteButtonIcon();
+  updateFullscreenButtonIcon();
+
   document.addEventListener("fullscreenchange", onFullscreenChange);
 
   const cleanup = () => {
     clearHideControlsTimer();
     removeAudioTrackListener();
+    destroySpeedSelectUi();
+    destroyAudioSelectUi();
     document.removeEventListener("fullscreenchange", onFullscreenChange);
   };
 
   return { element: root, cleanup };
 }
 
-function createControlButton(label) {
+function enhanceCustomSelect(selectEl, config = {}) {
+  if (!selectEl || selectEl.dataset.customSelectReady === "1") return () => {};
+  const parent = selectEl.parentElement;
+  if (!parent) return () => {};
+
+  const wrapper = document.createElement("div");
+  wrapper.className = `custom-select${config.compact ? " is-compact" : ""}`;
+  if (Number.isFinite(config.minWidth) && config.minWidth > 0) {
+    wrapper.style.minWidth = `${config.minWidth}px`;
+  }
+
+  const trigger = document.createElement("button");
+  trigger.type = "button";
+  trigger.className = "custom-select-trigger";
+  trigger.setAttribute("aria-haspopup", "listbox");
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-label", config.ariaLabel || "Selecionar opcao");
+
+  const label = document.createElement("span");
+  label.className = "custom-select-label";
+
+  const caret = document.createElement("i");
+  caret.className = "bi bi-chevron-down";
+  caret.setAttribute("aria-hidden", "true");
+
+  trigger.appendChild(label);
+  trigger.appendChild(caret);
+
+  const menu = document.createElement("div");
+  menu.className = "custom-select-menu";
+  menu.setAttribute("role", "listbox");
+
+  parent.insertBefore(wrapper, selectEl);
+  wrapper.appendChild(selectEl);
+  wrapper.appendChild(trigger);
+  wrapper.appendChild(menu);
+
+  selectEl.classList.add("native-select-hidden");
+  selectEl.dataset.customSelectReady = "1";
+
+  let isOpen = false;
+
+  const updateMenuDirection = () => {
+    wrapper.classList.remove("opens-up");
+
+    if (config.preferUp) {
+      wrapper.classList.add("opens-up");
+      return;
+    }
+
+    const maxMenuHeight = 220;
+    const optionCount = Math.max(1, menu.childElementCount || selectEl.options.length || 0);
+    const optionHeight = config.compact ? 34 : 38;
+    const estimatedMenuHeight = Math.min(maxMenuHeight, optionCount * optionHeight) + 12;
+    const rect = wrapper.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    if (spaceBelow < estimatedMenuHeight && spaceAbove > spaceBelow) {
+      wrapper.classList.add("opens-up");
+    }
+  };
+
+  const closeMenu = () => {
+    if (!isOpen) return;
+    isOpen = false;
+    wrapper.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+  };
+
+  const openMenu = () => {
+    if (trigger.disabled || isOpen) return;
+    updateMenuDirection();
+    isOpen = true;
+    wrapper.classList.add("is-open");
+    trigger.setAttribute("aria-expanded", "true");
+  };
+
+  const syncState = () => {
+    const shouldHide = selectEl.classList.contains("is-hidden");
+    wrapper.classList.toggle("is-hidden", shouldHide);
+
+    const disabled = Boolean(selectEl.disabled) || shouldHide;
+    trigger.disabled = disabled;
+    wrapper.classList.toggle("is-disabled", disabled);
+    if (disabled) closeMenu();
+  };
+
+  const renderOptions = () => {
+    const options = Array.from(selectEl.options || []);
+    menu.innerHTML = "";
+
+    if (!options.length) {
+      label.textContent = config.placeholder || "Sem opcoes";
+      syncState();
+      return;
+    }
+
+    let selected = options.find((option) => option.value === selectEl.value);
+    if (!selected) {
+      selected = options[0];
+      selectEl.value = selected.value;
+    }
+
+    label.textContent = selected?.textContent?.trim() || config.placeholder || "Selecionar";
+
+    options.forEach((option, index) => {
+      const optionButton = document.createElement("button");
+      optionButton.type = "button";
+      optionButton.className = "custom-select-option";
+      optionButton.setAttribute("role", "option");
+      optionButton.dataset.value = option.value;
+      optionButton.textContent = option.textContent?.trim() || `Opcao ${index + 1}`;
+
+      if (option.disabled) {
+        optionButton.disabled = true;
+        optionButton.classList.add("is-disabled");
+      }
+
+      const isSelected = option.value === selectEl.value;
+      optionButton.setAttribute("aria-selected", String(isSelected));
+      optionButton.classList.toggle("is-selected", isSelected);
+
+      optionButton.addEventListener("click", () => {
+        if (option.disabled) return;
+        if (selectEl.value !== option.value) {
+          selectEl.value = option.value;
+          selectEl.dispatchEvent(new Event("change", { bubbles: true }));
+        } else {
+          label.textContent = option.textContent?.trim() || "";
+        }
+        closeMenu();
+      });
+
+      menu.appendChild(optionButton);
+    });
+
+    syncState();
+  };
+
+  const onTriggerClick = () => {
+    if (isOpen) {
+      closeMenu();
+      return;
+    }
+    openMenu();
+  };
+
+  const onDocumentClick = (event) => {
+    if (wrapper.contains(event.target)) return;
+    closeMenu();
+  };
+
+  const onDocumentKeyDown = (event) => {
+    if (event.key !== "Escape") return;
+    closeMenu();
+  };
+
+  const onSelectChange = () => {
+    renderOptions();
+    if (isOpen) updateMenuDirection();
+  };
+
+  const onWindowResize = () => {
+    if (isOpen) updateMenuDirection();
+  };
+
+  trigger.addEventListener("click", onTriggerClick);
+  document.addEventListener("click", onDocumentClick);
+  document.addEventListener("keydown", onDocumentKeyDown);
+  window.addEventListener("resize", onWindowResize);
+  selectEl.addEventListener("change", onSelectChange);
+
+  const observer = new MutationObserver(() => {
+    renderOptions();
+  });
+
+  observer.observe(selectEl, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "disabled", "label", "value", "selected"],
+  });
+
+  renderOptions();
+
+  return () => {
+    closeMenu();
+    observer.disconnect();
+    trigger.removeEventListener("click", onTriggerClick);
+    document.removeEventListener("click", onDocumentClick);
+    document.removeEventListener("keydown", onDocumentKeyDown);
+    window.removeEventListener("resize", onWindowResize);
+    selectEl.removeEventListener("change", onSelectChange);
+
+    selectEl.classList.remove("native-select-hidden");
+    delete selectEl.dataset.customSelectReady;
+
+    if (wrapper.parentElement) {
+      wrapper.parentElement.insertBefore(selectEl, wrapper);
+      wrapper.remove();
+    }
+  };
+}
+
+function createControlButton(iconClass, label) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "control-button";
-  button.textContent = label;
+  if (label) {
+    button.setAttribute("aria-label", label);
+    button.title = label;
+  }
+  if (iconClass) setButtonIcon(button, iconClass);
   return button;
+}
+
+function setButtonIcon(button, iconClass) {
+  if (!button) return;
+  button.innerHTML = "";
+  const icon = document.createElement("i");
+  icon.className = `bi ${iconClass}`;
+  icon.setAttribute("aria-hidden", "true");
+  button.appendChild(icon);
 }
 
 function updateTimeLabel(videoEl, label) {
