@@ -34,17 +34,17 @@ Exemplo rapido:
 - slug: fleabag
 
 ### Temporada 1
-- episodio: 1 | Episodio - 1 | 1h 35min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/1.mp4
-- episodio: 2 | Episodio - 2 | 1h 35min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/2.mp4
-- episodio: 3 | Episodio - 3 | 1h 35min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/3.mp4
-- episodio: 4 | Episodio - 4 | 1h 35min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/4.mp4
-- episodio: 5 | Episodio - 5 | 1h 35min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/5.mp4
-- episodio: 6 | Episodio - 6 | 1h 35min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/6.mp4
+- episodio: 1 | Episodio - 1 | 26:07 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/1.mp4
+- episodio: 2 | Episodio - 2 | 26:26 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/2.mp4
+- episodio: 3 | Episodio - 3 | 25:33 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/3.mp4
+- episodio: 4 | Episodio - 4 | 26:15 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/4.mp4
+- episodio: 5 | Episodio - 5 | 23:02 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/5.mp4
+- episodio: 6 | Episodio - 6 | 25:16 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_1_pt/6.mp4
 
 ### Temporada 2
-- episodio: 1 | Episodio - 1 | 1h 35min | https://SEU-LINK-AQUI/fleabag-s2e1.mp4
-- episodio: 2 | Episodio - 2 | 1h 35min | https://SEU-LINK-AQUI/fleabag-s2e2.mp4
-- episodio: 3 | Episodio - 3 | 1h 35min | https://SEU-LINK-AQUI/fleabag-s2e3.mp4
-- episodio: 4 | Episodio - 4 | 1h 35min | https://SEU-LINK-AQUI/fleabag-s2e4.mp4
-- episodio: 5 | Episodio - 5 | 1h 35min | https://SEU-LINK-AQUI/fleabag-s2e5.mp4
-- episodio: 6 | Episodio - 6 | 1h 35min | https://SEU-LINK-AQUI/fleabag-s2e6.mp4
+- episodio: 1 | Episodio - 1 | 25:45 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_2_pt/1.mp4
+- episodio: 2 | Episodio - 2 | 25:30 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_2_pt/2.mp4
+- episodio: 3 | Episodio - 3 | 22:47 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_2_pt/3.mp4
+- episodio: 4 | Episodio - 4 | 27:16 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_2_pt/4.mp4
+- episodio: 5 | Episodio - 5 | 23:02 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_2_pt/5.mp4
+- episodio: 6 | Episodio - 6 | 26:36 min | https://github.com/flaviobaptista/cineplus/raw/refs/heads/main/Flb_2_pt/6.mp4

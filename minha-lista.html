@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -39,6 +39,19 @@
         <a href="minha-lista.html" class="active">Minha Lista</a>
       </nav>
 
+      <div class="topbar-datetime" data-datetime aria-live="polite">
+        <span class="topbar-datetime-text" data-datetime-text>--</span>
+        <span class="topbar-datetime-state">
+          <i
+            class="bi bi-sun-fill topbar-datetime-icon is-day"
+            data-datetime-icon
+            aria-hidden="true"
+          ></i>
+          <span class="topbar-datetime-label" data-datetime-label>Manh&atilde;</span>
+          <span class="topbar-datetime-period is-hidden" data-datetime-period></span>
+        </span>
+      </div>
+
       <label class="search-box" for="searchInput">
         <input
           id="searchInput"
@@ -48,6 +61,14 @@
         />
       </label>
     </header>
+
+    <section class="love-banner" aria-label="Mensagem especial">
+      <p class="love-banner-text">
+        Ca, fiz esse cantinho pra voc&ecirc; e espero que ele traga alegria para seus dias...
+        Com todo meu amor - TuTo
+        <i class="bi bi-heart-fill" aria-hidden="true"></i>
+      </p>
+    </section>
 
     <main>
       <section class="catalogo">
@@ -107,3 +128,5 @@
     <script src="app.js"></script>
   </body>
 </html>
+
+

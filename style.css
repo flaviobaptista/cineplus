@@ -89,13 +89,17 @@ body.no-scroll {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto 1fr minmax(220px, 340px);
+  grid-template-columns: auto 1fr auto minmax(220px, 340px);
   align-items: center;
   gap: 1rem;
   padding: 1rem 2rem;
   background: rgba(14, 14, 18, 0.82);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-soft);
+}
+
+body[data-page="details"] .topbar {
+  grid-template-columns: auto 1fr auto auto;
 }
 
 .logo {
@@ -135,6 +139,94 @@ body.no-scroll {
 .nav-links a:hover,
 .nav-links a.active {
   color: var(--accent-main);
+}
+
+.topbar-datetime {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #2a2a34, #202029);
+  color: #fff;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.74rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.topbar-datetime-text {
+  color: #f4f3ff;
+}
+
+.topbar-datetime-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-weight: 700;
+}
+
+.topbar-datetime-icon {
+  font-size: 0.9rem;
+}
+
+.topbar-datetime-icon.is-day {
+  color: #ffd84d;
+}
+
+.topbar-datetime-icon.is-night {
+  color: #ffffff;
+}
+
+.topbar-datetime-label {
+  color: #ffffff;
+}
+
+.topbar-datetime-label.period-manha {
+  color: #ff9f43;
+}
+
+.topbar-datetime-label.period-tarde {
+  color: #ffd84d;
+}
+
+.topbar-datetime-label.period-noite {
+  color: #8fcaff;
+}
+
+.topbar-datetime-label.period-madrugada {
+  color: #c792ff;
+}
+
+.topbar-datetime-period {
+  color: #cfc9e2;
+  font-weight: 600;
+}
+
+.love-banner {
+  position: relative;
+  z-index: 2;
+  margin: 0.75rem 2rem 0;
+  border: 1px solid rgba(181, 107, 255, 0.32);
+  border-radius: 14px;
+  background: linear-gradient(125deg, #241f35 0%, #1e1e27 56%, #2b2438 100%);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
+}
+
+.love-banner-text {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(0.76rem, 1.35vw, 0.94rem);
+  letter-spacing: 0.01em;
+  color: #ff4f83;
+}
+
+.love-banner-text .bi {
+  margin-left: 0.28rem;
+  color: #ff1a57;
 }
 
 .search-box {
@@ -1157,6 +1249,19 @@ main {
     width: min(560px, 100%);
   }
 
+  .topbar-datetime {
+    justify-self: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.25rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .love-banner {
+    margin-inline: 1rem;
+  }
+
   main {
     padding-inline: 1rem;
   }
@@ -1178,6 +1283,16 @@ main {
 }
 
 @media (max-width: 640px) {
+  .topbar-datetime {
+    font-size: 0.68rem;
+    padding: 0.4rem 0.62rem;
+  }
+
+  .love-banner-text {
+    padding: 0.75rem 0.7rem;
+    line-height: 1.45;
+  }
+
   .cards-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.7rem;

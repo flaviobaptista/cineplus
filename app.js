@@ -38,6 +38,7 @@ const episodesContainer = document.getElementById("episodesContainer");
 
 const searchInput = document.getElementById("searchInput");
 const cardTemplate = document.getElementById("cardTemplate");
+const dateTimeWidgets = Array.from(document.querySelectorAll("[data-datetime]"));
 
 const playerModal = document.getElementById("playerModal");
 const playerContainer = document.getElementById("playerContainer");
@@ -68,11 +69,14 @@ let currentSeriesSeasonIndex = 0;
 let currentSeriesEpisodeIndex = 0;
 let catalogTypeFilter = "all";
 let seasonSelectUiCleanup = null;
+let dateTimeIntervalId = null;
 
 init();
 
 async function init() {
   try {
+    initTopbarDateTime();
+
     myListSlugs = loadMyList();
     watchProgress = loadProgress();
 
@@ -116,6 +120,87 @@ async function init() {
   } catch (error) {
     renderStartupError(error);
   }
+}
+
+function initTopbarDateTime() {
+  if (!dateTimeWidgets.length) return;
+
+  const monthNames = [
+    "janeiro",
+    "fevereiro",
+    "mar\u00e7o",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
+  ];
+
+  const getPartOfDay = (hour) => {
+    if (hour >= 0 && hour <= 5) return "Madrugada";
+    if (hour >= 6 && hour <= 11) return "Manh\u00e3";
+    if (hour >= 12 && hour <= 18) return "Tarde";
+    return "Noite";
+  };
+
+  const partClassMap = {
+    Madrugada: "period-madrugada",
+    "Manh\u00e3": "period-manha",
+    Tarde: "period-tarde",
+    Noite: "period-noite",
+  };
+
+  const updateDateTime = () => {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const day = now.getDate();
+    const month = monthNames[now.getMonth()] || "";
+    const year = now.getFullYear();
+    const time = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+    const dateText = `${day} de ${month} de ${year} - ${time}`;
+
+    const partOfDay = getPartOfDay(hour);
+    const isDay = hour >= 6 && hour <= 18;
+
+    dateTimeWidgets.forEach((widget) => {
+      const textEl = widget.querySelector("[data-datetime-text]");
+      const labelEl = widget.querySelector("[data-datetime-label]");
+      const periodEl = widget.querySelector("[data-datetime-period]");
+      const iconEl = widget.querySelector("[data-datetime-icon]");
+
+      if (textEl) textEl.textContent = dateText;
+      if (labelEl) {
+        labelEl.textContent = partOfDay;
+        labelEl.classList.remove("period-madrugada", "period-manha", "period-tarde", "period-noite");
+        labelEl.classList.add(partClassMap[partOfDay] || "period-noite");
+        labelEl.classList.remove("is-hidden");
+      }
+      if (periodEl) {
+        periodEl.textContent = "";
+        periodEl.classList.add("is-hidden");
+      }
+
+      if (iconEl) {
+        iconEl.classList.remove("bi-sun-fill", "bi-moon-stars-fill", "is-day", "is-night");
+        iconEl.classList.add(isDay ? "bi-sun-fill" : "bi-moon-stars-fill");
+        iconEl.classList.add(isDay ? "is-day" : "is-night");
+      }
+
+      widget.setAttribute("aria-label", `${dateText}. ${partOfDay}.`);
+    });
+  };
+
+  updateDateTime();
+
+  if (dateTimeIntervalId) {
+    clearInterval(dateTimeIntervalId);
+  }
+  dateTimeIntervalId = setInterval(updateDateTime, 30000);
 }
 
 function bindGlobalEvents() {
@@ -2526,3 +2611,4 @@ function goToCatalogPage(page, totalPages) {
   renderCatalog(filteredCatalog);
   document.querySelector("main")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
+
