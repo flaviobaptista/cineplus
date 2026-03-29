@@ -12,7 +12,7 @@ Campos recomendados: `categoria`, `descricao`, `capa`, `ano`, `duracao`, `classi
 - ano: 2015
 - duracao: 1h 35min
 - classificacao: Livre
-- destaque: sim
+- destaque: 
 
 ##  Luck
 - categoria: Apple Original
@@ -22,7 +22,7 @@ Campos recomendados: `categoria`, `descricao`, `capa`, `ano`, `duracao`, `classi
 - ano: 2022
 - duracao: 1h 45min
 - classificacao: Livre
-- destaque: sim
+- destaque:
 
 ##  Elementos
 - categoria: Originais Disney/Pixar
@@ -32,5 +32,5 @@ Campos recomendados: `categoria`, `descricao`, `capa`, `ano`, `duracao`, `classi
 - ano: 2023
 - duracao: 1h 41min
 - classificacao: Livre
-- destaque: sim
+- destaque: 
 
