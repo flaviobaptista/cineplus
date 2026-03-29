@@ -34,3 +34,20 @@ Campos recomendados: `categoria`, `descricao`, `capa`, `ano`, `duracao`, `classi
 - classificacao: Livre
 - destaque: sim
 
+
+## Universo Animado
+- tipo: serie
+- categoria: Originais Disney/Pixar
+- descricao: Uma coletanea em formato de serie para testar temporadas e episodios no Cine Plus.
+- capa: https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/ca2b5ed3-e242-4a43-bc6a-2e02d024471b/compose?aspectRatio=1.78&format=webp&width=1200
+- ano: 2026
+- classificacao: Livre
+- destaque: sim
+- slug: universo-animado
+
+### Temporada 1
+- episodio: 1 | Divertida Mente Especial | 1h 35min | https://media.githubusercontent.com/media/flaviobaptista/cineplus/aef7607559f1b833050cd8699de1aefd407f5750/dvdmt.mp4 | https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/ca2b5ed3-e242-4a43-bc6a-2e02d024471b/compose?aspectRatio=1.78&format=webp&width=1200 | Alegria e Tristeza encarando grandes mudancas.
+- episodio: 2 | Luck em Foco | 1h 45min | https://media.githubusercontent.com/media/flaviobaptista/cineplus/aef7607559f1b833050cd8699de1aefd407f5750/st.mp4 | https://m.media-amazon.com/images/S/pv-target-images/5b6e762da96a5e6472d141f2f5e5a1b74bb4b77243514144f119d5d1d3e67c0f.jpg | Uma nova chance para virar o jogo da sorte.
+
+### Temporada 2
+- episodio: 1 | Elementos em Chamas | 1h 41min | https://media.githubusercontent.com/media/flaviobaptista/cineplus/aef7607559f1b833050cd8699de1aefd407f5750/hlmts.mp4 | https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/6ba638b9-ecbd-4403-8b04-1999e12ae493/compose?aspectRatio=1.78&format=webp&width=1200 | Fogo e agua descobrem novas conexoes na cidade.

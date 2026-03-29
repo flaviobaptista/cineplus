@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cine Plus - Inicio</title>
+    <title>Cine Plus - Catalogo</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +17,7 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body data-page="home">
+  <body data-page="catalog">
     <div class="bg-glow bg-glow-primary"></div>
     <div class="bg-glow bg-glow-secondary"></div>
 
@@ -30,8 +30,8 @@
       </a>
 
       <nav class="nav-links">
-        <a href="index.html" class="active">Inicio</a>
-        <a href="catalogo.html">Catalogo</a>
+        <a href="index.html">Inicio</a>
+        <a href="catalogo.html" class="active">Catalogo</a>
         <a href="minha-lista.html">Minha Lista</a>
       </nav>
 
@@ -46,67 +46,21 @@
     </header>
 
     <main>
-      <section id="hero" class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="hero-tag">Destaques</p>
-          <h1 id="heroTitle">Carregando catalogo...</h1>
-          <p id="heroDescription"></p>
-          <div class="hero-meta">
-            <span id="heroYear"></span>
-            <span id="heroDuration"></span>
-            <span id="heroRating"></span>
-          </div>
-          <div class="hero-actions">
-            <button id="heroPlayButton" class="play-button" type="button">Assistir agora</button>
-            <button id="heroDetailsButton" class="ghost-button" type="button">Ver detalhes</button>
-          </div>
-        </div>
-        <div class="hero-nav">
-          <button
-            id="heroPrevButton"
-            class="icon-button hero-nav-button"
-            type="button"
-            aria-label="Anterior"
-          >
-            &lt;
-          </button>
-          <div id="heroIndicators" class="hero-indicators"></div>
-          <button
-            id="heroNextButton"
-            class="icon-button hero-nav-button"
-            type="button"
-            aria-label="Proximo"
-          >
-            >
-          </button>
-        </div>
-      </section>
-
-      <section id="continue-section" class="catalogo">
-        <div class="section-head">
-          <h2>Continuar assistindo</h2>
-          <p>Retome exatamente de onde voce parou.</p>
-        </div>
-        <div id="continueContainer" class="cards-row"></div>
-      </section>
-
       <section class="catalogo">
         <div class="section-head">
-          <h2>Filmes</h2>
-          <p>Longas e especiais.</p>
+          <h2>Catalogo completo</h2>
+          <p>Filtre por filmes ou series e encontre rapido.</p>
         </div>
-        <div id="moviesContainer" class="cards-row"></div>
-      </section>
 
-      <section class="catalogo">
-        <div class="section-head">
-          <h2>Series</h2>
-          <p>Temporadas e episodios organizados.</p>
+        <div id="catalogFilters" class="catalog-filters">
+          <button type="button" class="ghost-button is-active-filter" data-filter="all">Tudo</button>
+          <button type="button" class="ghost-button" data-filter="filme">Filmes</button>
+          <button type="button" class="ghost-button" data-filter="serie">Series</button>
         </div>
-        <div id="seriesContainer" class="cards-row"></div>
-      </section>
 
+        <div id="catalogContainer" class="cards-row"></div>
+        <div id="catalogPagination" class="pagination"></div>
+      </section>
     </main>
 
     <div id="playerModal" class="player-modal" aria-hidden="true">
